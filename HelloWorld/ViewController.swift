@@ -11,17 +11,11 @@ class ViewController: UIViewController {
     
     // MARK: - Otlets
 
-    @IBOutlet var viewColorRed: UIView!
-    @IBOutlet var viewColorGreen: UIView!
-    @IBOutlet var viewColorBlue: UIView!
+    @IBOutlet var colorView: UIView!
     
-    @IBOutlet var labelRedSlider: UILabel!
-    @IBOutlet var labelGreenSlider: UILabel!
-    @IBOutlet var labelBlueSlider: UILabel!
-    
-    @IBOutlet var textRed: UITextField!
-    @IBOutlet var textGreen: UITextField!
-    @IBOutlet var textBlue: UITextField!
+    @IBOutlet var redLabel: UILabel!
+    @IBOutlet var greenLabel: UILabel!
+    @IBOutlet var blueLabel: UILabel!
     
     @IBOutlet var redSlider: UISlider!
     @IBOutlet var greenSlider: UISlider!
@@ -30,64 +24,49 @@ class ViewController: UIViewController {
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViewColor()
         
-        setupRedSlider()
-        setupGreenSlider()
-        setupBlueSlider()
+        colorView.layer.cornerRadius = 15
+        setColor()
+        setValue(for: redLabel, greenLabel, blueLabel)
+    }
+    
+    // MARK: - Action method
+    @IBAction func sliderAction(_ sender:UISlider) {
+        setColor()
+        switch sender {
+        case redSlider:
+            redLabel.text = string(from: redSlider)
+        case greenSlider:
+            greenLabel.text = string(from: greenSlider)
+        default:
+            blueLabel.text = string(from: blueSlider)
+        }
     }
 
-    // MARK: - Action methods
-    @IBAction func redSliderAction() {
-        viewColorRed.backgroundColor = viewColorRed.backgroundColor?.withAlphaComponent(CGFloat(redSlider.value))
-        
-        labelRedSlider.text = String(format: "%.2f", redSlider.value)
-        
+private func setColor(){
+        colorView.backgroundColor = UIColor(
+            red: CGFloat(redSlider.value),
+            green: CGFloat(greenSlider.value),
+            blue: CGFloat(blueSlider.value),
+            alpha: 1)
     }
     
-    @IBAction func greenSliderAction() {
-        viewColorGreen.backgroundColor = viewColorGreen.backgroundColor?.withAlphaComponent(CGFloat(greenSlider.value))
-        labelGreenSlider.text = String(format: "%.2f", greenSlider.value)
+    
+    private func setValue(for labels: UILabel...) {
+        labels.forEach { label in
+            switch label {
+            case redLabel:
+                redLabel.text = string(from: redSlider)
+            case greenLabel:
+                greenLabel.text = string(from: greenSlider)
+            default:
+                blueLabel.text = string(from: blueSlider)
+            }
+        }
     }
     
-    @IBAction func blueSliderAction() {
-        viewColorBlue.backgroundColor = viewColorBlue.backgroundColor?.withAlphaComponent((CGFloat(blueSlider.value)))
-        labelBlueSlider.text = String(format: "%.2f",blueSlider.value)
+    private func string(from slider:UISlider) -> String {
+        String(format: "%.2f", slider.value)
     }
-    
-    // MARK: - Private Methods
-    private func setupRedSlider() {
-        redSlider.minimumValue = 0.00
-        redSlider.maximumValue = 1.00
-        
-        redSlider.minimumTrackTintColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
-        redSlider.maximumTrackTintColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 0.5)
-    }
-    
-    private func setupGreenSlider() {
-        greenSlider.minimumValue = 0.00
-        greenSlider.maximumValue = 1.00
-  
-        greenSlider.minimumTrackTintColor = #colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1)
-        greenSlider.maximumTrackTintColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 0.5)
-    }
-    
-    private func setupBlueSlider() {
-        blueSlider.minimumValue = 0.00
-        blueSlider.maximumValue = 1.00
-        
-        blueSlider.minimumTrackTintColor = #colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1)
-        blueSlider.maximumTrackTintColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 0.5)
-    }
-    
-    private func setupViewColor() {
-        viewColorRed.layer.cornerRadius = 10
-        viewColorGreen.layer.cornerRadius = 10
-        viewColorBlue.layer.cornerRadius = 10
-        
-        viewColorRed.backgroundColor = .red
-        viewColorGreen.backgroundColor = .green
-        viewColorBlue.backgroundColor = .blue
-    }
+     
 }
-
